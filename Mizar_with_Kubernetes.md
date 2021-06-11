@@ -1,7 +1,10 @@
 Setup Mizar with Kubernetes
 ==================
 
-## Pre-requisites
+## Install Dependencies
+```
+sudo apt-get install -y ca-certificates curl apt-transport-https gnupg lsb-release vim
+```
 ### 1. Check Network Interface
 `ip a`
 
