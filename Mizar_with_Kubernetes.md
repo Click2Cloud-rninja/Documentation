@@ -175,14 +175,86 @@ kubeadm init --apiserver-advertise-address=<Host-IP> --pod-network-cidr=20.0.0.0
 kubectl apply -f https://raw.githubusercontent.com/CentaurusInfra/mizar/dev-next/etc/deploy/deploy.mizar.yaml
 ```
 
-To check pods
 
-```bigquery
-kubectl get pods -A
-```
+## Testing Steps
 
-To check status of node
+#### To check status of node
 
 ```bigquery
 kubectl get nodes
 ```
+##### Output:
+````
+NAME            STATUS   ROLES                  AGE    VERSION
+dnd-centaurus   Ready    control-plane,master   149m   v1.21.2
+````
+
+
+#### To check pods
+
+```bigquery
+kubectl get pods -Ao wide
+```
+##### Output:
+````
+default       mizar-daemon-fjnqn                      1/1     Running   0          152m   192.168.0.105   dnd-centaurus   <none>           <none>
+default       mizar-operator-79d4846f95-xnqlv         1/1     Running   0          152m   192.168.0.105   dnd-centaurus   <none>           <none>
+kube-system   coredns-558bd4d5db-rv8c8                0/1     Running   36         153m   20.0.0.30       dnd-centaurus   <none>           <none>
+kube-system   coredns-558bd4d5db-zbzcf                0/1     Running   36         153m   20.0.0.46       dnd-centaurus   <none>           <none>
+kube-system   etcd-dnd-centaurus                      1/1     Running   0          153m   192.168.0.105   dnd-centaurus   <none>           <none>
+kube-system   kube-apiserver-dnd-centaurus            1/1     Running   0          153m   192.168.0.105   dnd-centaurus   <none>           <none>
+kube-system   kube-controller-manager-dnd-centaurus   1/1     Running   0          153m   192.168.0.105   dnd-centaurus   <none>           <none>
+kube-system   kube-proxy-jcqfs                        1/1     Running   0          153m   192.168.0.105   dnd-centaurus   <none>           <none>
+kube-system   kube-scheduler-dnd-centaurus 
+````
+#### To check vpcs
+
+```bigquery
+kubectl get vpcs -A
+```
+##### Output:
+````
+NAME   IP         PREFIX   VNI   DIVIDERS   STATUS        CREATETIME                   PROVISIONDELAY
+vpc0   20.0.0.0   8        1     1          Provisioned   2021-06-21T06:51:10.241690   41.406581
+````
+#### To check subnets
+
+```bigquery
+kubectl get subnets -A
+```
+##### Output:
+````
+NAME   IP         PREFIX   VNI   VPC    STATUS        BOUNCERS   CREATETIME                   PROVISIONDELAY
+net0   20.0.0.0   8        1     vpc0   Provisioned   1          2021-06-21T06:51:10.307781   61.483709
+````
+#### To check droplets
+
+```bigquery
+kubectl get droplets -A
+```
+##### Output:
+````
+NAME            MAC                 IP              STATUS        INTERFACE   CREATETIME                   PROVISIONDELAY
+dnd-centaurus   fa:16:3e:56:f4:21   192.168.0.105   Provisioned   eth0        2021-06-21T06:51:51.056378   0.355918
+````
+#### To check dividers
+
+```bigquery
+kubectl get dividers -A
+```
+##### Output:
+````
+NAME                                          VPC    IP              MAC                 DROPLET         STATUS        CREATETIME                   PROVISIONDELAY
+vpc0-d-ef998d38-ccb2-42d8-8de7-16e0a893c985   vpc0   192.168.0.105   fa:16:3e:56:f4:21   dnd-centaurus   Provisioned   2021-06-21T06:51:51.636539   0.240687
+````
+#### To check bouncers
+
+```bigquery
+kubectl get bouncers -A
+```
+##### Output:
+````
+NAME                                          VPC    NET    IP              MAC                 DROPLET         STATUS        CREATETIME                   PROVISIONDELAY
+net0-b-ff73d09e-6f84-4792-b1a0-fc99cfc57cd5   vpc0   net0   192.168.0.105   fa:16:3e:56:f4:21   dnd-centaurus   Provisioned   2021-06-21T06:52:11.782960   1.41518
+````
+
